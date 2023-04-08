@@ -5,10 +5,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.example.moviesitdevapp.R
+import com.example.moviesitdevapp.databinding.FragmentDetailBinding
+import com.example.moviesitdevapp.screens.main.MainAdapter
 
 class DetailFragment : Fragment() {
+    private lateinit var binding: FragmentDetailBinding
+    private val viewModel: DetailFragmentViewModel by lazy {
+        ViewModelProvider(this)[DetailFragmentViewModel::class.java]
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        binding = FragmentDetailBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initialization()
+    }
+
+    private fun initialization() {
     }
 }
