@@ -34,8 +34,14 @@ class MainFragment : Fragment() {
     }
 
     private fun initialization() {
-        adapter = MainAdapter()
+        adapter = MainAdapter(requireContext())
+        viewModel.getMovies()
         recyclerView = binding.rvMain
         recyclerView.adapter = adapter
+        viewModel.movies.observe(viewLifecycleOwner) { movies ->
+            movies.body()?.let {
+                adapter.setList(it.movieItemModels)
+            }
+        }
     }
 }

@@ -33,7 +33,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun initialization() {
-        adapter = MainAdapter()
+        adapter = MainAdapter(requireContext())
         recyclerView = binding.rvFavorite
         recyclerView.adapter = adapter
     }
