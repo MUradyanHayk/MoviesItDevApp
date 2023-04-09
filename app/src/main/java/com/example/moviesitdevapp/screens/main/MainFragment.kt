@@ -1,12 +1,11 @@
 package com.example.moviesitdevapp.screens.main
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviesitdevapp.MainActivity
 import com.example.moviesitdevapp.R
 import com.example.moviesitdevapp.databinding.FragmentMainBinding
 
@@ -25,6 +24,7 @@ class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMainBinding.inflate(layoutInflater, container, false)
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -42,6 +42,21 @@ class MainFragment : Fragment() {
             movies.body()?.let {
                 adapter.setList(it.movieItemModels)
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.item_favorite -> {
+                (activity as MainActivity?)?.navController?.navigate(R.id.action_mainFragment_to_favoriteFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

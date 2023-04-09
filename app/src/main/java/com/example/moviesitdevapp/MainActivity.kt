@@ -1,11 +1,13 @@
 package com.example.moviesitdevapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import com.example.moviesitdevapp.databinding.ActivityMainBinding
 import com.example.moviesitdevapp.utils.MAIN
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -16,6 +18,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         MAIN = this
 
-//        navController = Navigation.findNavController(this, R.id.nav_graph)
+//        navController = Navigation.findNavController(this, R.id.fragmentContainerView)
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment?
+
+        navController = navHostFragment!!.navController
     }
 }
