@@ -1,6 +1,7 @@
 package com.example.moviesitdevapp.screens.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +14,7 @@ import com.example.moviesitdevapp.model.MovieItemModel
 import com.example.moviesitdevapp.utils.MAIN
 import java.lang.ref.WeakReference
 
-class MainFragment : Fragment(), MainAdapterDelegate {
+class MainFragment : Fragment(), AdapterDelegate {
 
 //    private var _binding:FragmentMainBinding? = null
 //    private val binding:FragmentMainBinding
@@ -39,8 +40,9 @@ class MainFragment : Fragment(), MainAdapterDelegate {
 
     private fun initialization() {
         adapter = MainAdapter(requireContext())
-        adapter?.delegate = WeakReference(this)
-        viewModel.getMovies()
+        adapter.delegate = WeakReference(this)
+        viewModel.getMoviesFromServer()
+        viewModel.initDatabase()
         recyclerView = binding.rvMain
         recyclerView.adapter = adapter
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
@@ -65,17 +67,17 @@ class MainFragment : Fragment(), MainAdapterDelegate {
         }
     }
 
-    companion object {
-        fun clickMovie(model: MovieItemModel) {
+    override fun clickMovie(model: MovieItemModel) {
+        try {
             val bundle = Bundle()
             bundle.putSerializable("model", model)
             MAIN.navController.navigate(R.id.action_mainFragment_to_detailFragment, bundle)
+        } catch (e: Exception) {
+            Log.e(TAG, e.message.toString())
         }
     }
 
-    override fun clickMovie(model: MovieItemModel) {
-        val bundle = Bundle()
-        bundle.putSerializable("model", model)
-        MAIN.navController.navigate(R.id.action_mainFragment_to_detailFragment, bundle)
+    companion object {
+        const val TAG = "MainFragment"
     }
 }

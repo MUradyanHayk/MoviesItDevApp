@@ -1,17 +1,20 @@
 package com.example.moviesitdevapp.data.room.repository
 
 import androidx.lifecycle.LiveData
+import com.example.moviesitdevapp.data.room.dao.MoviesDao
 import com.example.moviesitdevapp.model.MovieItemModel
 
-class MoviesRepositoryImpl :IMoviesRepository {
+class MoviesRepositoryImpl(private val movieDao: MoviesDao) : IMoviesRepository {
     override val allMovies: LiveData<List<MovieItemModel>>
-        get() = TODO("Not yet implemented")
+        get() = movieDao.getAllMovies()
 
     override suspend fun insertMovie(movieItemModel: MovieItemModel, onSuccess: () -> Unit) {
-        TODO("Not yet implemented")
+        movieDao.insert(movieItemModel)
+        onSuccess()
     }
 
     override suspend fun deleteMovie(movieItemModel: MovieItemModel, onSuccess: () -> Unit) {
-        TODO("Not yet implemented")
+        movieDao.delete(movieItemModel)
+        onSuccess()
     }
 }

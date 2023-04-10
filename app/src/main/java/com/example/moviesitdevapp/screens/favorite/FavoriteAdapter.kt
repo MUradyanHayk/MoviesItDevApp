@@ -1,27 +1,23 @@
-package com.example.moviesitdevapp.screens.main
+package com.example.moviesitdevapp.screens.favorite
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.moviesitdevapp.R
 import com.example.moviesitdevapp.databinding.ItemLayoutBinding
 import com.example.moviesitdevapp.model.MovieItemModel
+import com.example.moviesitdevapp.screens.main.AdapterDelegate
 import com.example.moviesitdevapp.utils.AdapterViewHolder
-import com.example.moviesitdevapp.utils.BASE_URL
 import java.lang.ref.WeakReference
 
-interface AdapterDelegate {
-    fun clickMovie(model: MovieItemModel)
-}
-class MainAdapter(val context: Context) : RecyclerView.Adapter<AdapterViewHolder>() {
+class FavoriteAdapter(val context: Context) : RecyclerView.Adapter<AdapterViewHolder>() {
 
     private var moviesList = emptyList<MovieItemModel>()
 
-    var delegate:WeakReference<AdapterDelegate>? = null
+    var delegate: WeakReference<AdapterDelegate>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterViewHolder {
         val binding = ItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)

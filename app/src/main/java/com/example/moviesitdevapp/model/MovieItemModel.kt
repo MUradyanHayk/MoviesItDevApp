@@ -2,8 +2,10 @@ package com.example.moviesitdevapp.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.io.Serializable
+
 @Entity(tableName = "_movies_table")
 data class MovieItemModel(
     @PrimaryKey(autoGenerate = true)
@@ -12,8 +14,6 @@ data class MovieItemModel(
     val adult: Boolean,
     @ColumnInfo
     val backdrop_path: String,
-    @ColumnInfo
-    val genre_ids: List<Int>,
     @ColumnInfo
     val original_language: String,
     @ColumnInfo

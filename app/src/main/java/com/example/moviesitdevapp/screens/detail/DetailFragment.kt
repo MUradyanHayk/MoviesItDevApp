@@ -12,6 +12,7 @@ import com.example.moviesitdevapp.databinding.FragmentDetailBinding
 import com.example.moviesitdevapp.model.MovieItemModel
 import com.example.moviesitdevapp.screens.main.MainAdapter
 import com.example.moviesitdevapp.utils.MAIN
+import com.example.moviesitdevapp.utils.SaveSharedManager
 import java.lang.ref.WeakReference
 
 class DetailFragment : Fragment() {
@@ -40,14 +41,23 @@ class DetailFragment : Fragment() {
         binding.tvDescription.text = _currentMovie.overview
         binding.tvDate.text = _currentMovie.release_date
 
+        isFavorite = SaveSharedManager.getFavorite(MAIN, _currentMovie.id.toString())
+        setFavoriteImg(isFavorite)
         binding.imgDetailFavorite.setOnClickListener {
             if (!isFavorite) {
-                binding.imgDetailFavorite.setImageResource(R.drawable.ic_favorite)
+                viewModel.insert(_currentMovie) {
+                    this.isFavorite = true
+                    setFavoriteImg(isFavorite)
+                    SaveSharedManager.setFavorite(MAIN, _currentMovie.id.toString(), isFavorite)
+                }
             } else {
-                binding.imgDetailFavorite.setImageResource(R.drawable.ic_favorite_border)
+                viewModel.delete(_currentMovie) {
+                    this.isFavorite = false
+                    setFavoriteImg(isFavorite)
+                    SaveSharedManager.setFavorite(MAIN, _currentMovie.id.toString(), isFavorite)
+                }
             }
 
-            isFavorite = !isFavorite
         }
 
         Glide.with(MAIN)
@@ -55,5 +65,13 @@ class DetailFragment : Fragment() {
             .centerCrop()
             .placeholder(R.drawable.ic_launcher_foreground)
             .into(binding.imgDetail)
+    }
+
+    private fun setFavoriteImg(isFavorite: Boolean) {
+        if (isFavorite) {
+            binding.imgDetailFavorite.setImageResource(R.drawable.ic_favorite)
+        } else {
+            binding.imgDetailFavorite.setImageResource(R.drawable.ic_favorite_border)
+        }
     }
 }
