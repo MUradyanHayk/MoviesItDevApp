@@ -3,7 +3,6 @@ package com.example.moviesitdevapp.utils
 import android.app.Activity
 import android.content.Context
 
-@Suppress("DEPRECATION")
 object SaveSharedManager {
     fun setFavorite(activity: Activity?, key: String, value: Boolean) {
         val sharedFavorite = activity?.getPreferences(Context.MODE_PRIVATE)

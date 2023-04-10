@@ -1,19 +1,19 @@
 package com.example.moviesitdevapp.screens.detail
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.moviesitdevapp.R
 import com.example.moviesitdevapp.databinding.FragmentDetailBinding
 import com.example.moviesitdevapp.model.MovieItemModel
-import com.example.moviesitdevapp.screens.main.MainAdapter
 import com.example.moviesitdevapp.utils.MAIN
 import com.example.moviesitdevapp.utils.SaveSharedManager
-import java.lang.ref.WeakReference
 
 class DetailFragment : Fragment() {
     private lateinit var binding: FragmentDetailBinding
@@ -43,21 +43,14 @@ class DetailFragment : Fragment() {
 
         isFavorite = SaveSharedManager.getFavorite(MAIN, _currentMovie.id.toString())
         setFavoriteImg(isFavorite)
-        binding.imgDetailFavorite.setOnClickListener {
-            if (!isFavorite) {
-                viewModel.insert(_currentMovie) {
-                    this.isFavorite = true
-                    setFavoriteImg(isFavorite)
-                    SaveSharedManager.setFavorite(MAIN, _currentMovie.id.toString(), isFavorite)
-                }
-            } else {
-                viewModel.delete(_currentMovie) {
-                    this.isFavorite = false
-                    setFavoriteImg(isFavorite)
-                    SaveSharedManager.setFavorite(MAIN, _currentMovie.id.toString(), isFavorite)
-                }
-            }
 
+        viewModel.isFavorite.observe(viewLifecycleOwner) { isFavorite ->
+            this.isFavorite = isFavorite
+            setFavoriteImg(isFavorite)
+        }
+
+        binding.imgDetailFavorite.setOnClickListener {
+            viewModel.onFavoriteClick(_currentMovie, isFavorite)
         }
 
         Glide.with(MAIN)
