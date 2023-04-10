@@ -17,6 +17,7 @@ import java.lang.ref.WeakReference
 class DetailFragment : Fragment() {
     private lateinit var binding: FragmentDetailBinding
     private var currentMovie: MovieItemModel? = null
+    private var isFavorite = false
     private val viewModel: DetailFragmentViewModel by lazy {
         ViewModelProvider(this)[DetailFragmentViewModel::class.java]
     }
@@ -38,6 +39,17 @@ class DetailFragment : Fragment() {
         binding.tvTitle.text = _currentMovie.title
         binding.tvDescription.text = _currentMovie.overview
         binding.tvDate.text = _currentMovie.release_date
+
+        binding.imgDetailFavorite.setOnClickListener {
+            if (!isFavorite) {
+                binding.imgDetailFavorite.setImageResource(R.drawable.ic_favorite)
+            } else {
+                binding.imgDetailFavorite.setImageResource(R.drawable.ic_favorite_border)
+            }
+
+            isFavorite = !isFavorite
+        }
+
         Glide.with(MAIN)
             .load("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${_currentMovie.poster_path}")
             .centerCrop()
