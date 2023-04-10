@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesitdevapp.MainActivity
 import com.example.moviesitdevapp.R
 import com.example.moviesitdevapp.databinding.FragmentMainBinding
+import com.example.moviesitdevapp.model.MovieItemModel
+import com.example.moviesitdevapp.utils.MAIN
+import java.lang.ref.WeakReference
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), MainAdapterDelegate {
 
 //    private var _binding:FragmentMainBinding? = null
 //    private val binding:FragmentMainBinding
@@ -35,6 +39,7 @@ class MainFragment : Fragment() {
 
     private fun initialization() {
         adapter = MainAdapter(requireContext())
+        adapter?.delegate = WeakReference(this)
         viewModel.getMovies()
         recyclerView = binding.rvMain
         recyclerView.adapter = adapter
@@ -58,5 +63,19 @@ class MainFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    companion object {
+        fun clickMovie(model: MovieItemModel) {
+            val bundle = Bundle()
+            bundle.putSerializable("model", model)
+            MAIN.navController.navigate(R.id.action_mainFragment_to_detailFragment, bundle)
+        }
+    }
+
+    override fun clickMovie(model: MovieItemModel) {
+        val bundle = Bundle()
+        bundle.putSerializable("model", model)
+        MAIN.navController.navigate(R.id.action_mainFragment_to_detailFragment, bundle)
     }
 }

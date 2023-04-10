@@ -11,11 +11,16 @@ import com.example.moviesitdevapp.R
 import com.example.moviesitdevapp.databinding.ItemLayoutBinding
 import com.example.moviesitdevapp.model.MovieItemModel
 import com.example.moviesitdevapp.utils.BASE_URL
+import java.lang.ref.WeakReference
 
+interface MainAdapterDelegate{
+    fun clickMovie(model: MovieItemModel)
+}
 class MainAdapter(val context: Context) : RecyclerView.Adapter<MainAdapter.MainAdapterViewHolder>() {
 
     private var moviesList = emptyList<MovieItemModel>()
 
+    var delegate:WeakReference<MainAdapterDelegate>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainAdapterViewHolder {
         val binding = ItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -29,6 +34,11 @@ class MainAdapter(val context: Context) : RecyclerView.Adapter<MainAdapter.MainA
     override fun onBindViewHolder(holder: MainAdapterViewHolder, position: Int) {
         holder.binding.itemTitle.text = moviesList[position].title
         holder.binding.itemDete.text = moviesList[position].release_date
+
+        holder.binding.root.setOnClickListener {
+            delegate?.get()?.clickMovie(moviesList[position])
+        }
+
         Glide.with(context)
             .load("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${moviesList[position].poster_path}")
             .centerCrop()
